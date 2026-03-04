@@ -2,8 +2,8 @@ const User=require('../models/userModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 
-exports.registerController=async(req,res)=>{
-    console.log('inside registerController');
+exports.registerCustomerController=async(req,res)=>{
+    console.log('inside registerCustomerController');
     const{name,email,password}=req.body
     try
     {
@@ -42,6 +42,9 @@ exports.loginController=async(req,res)=>{
          if (!isMatch) {
             return res.status(401).json("Invalid Email or Password")
         }
+        if (existingUser.role === "restaurant_admin" && !existingUser.isApproved) {
+            return res.status(403).json("Waiting for admin approval")
+        }
         if (existingUser.isBlocked) {
             return res.status(403).json("Account is blocked")
         }
@@ -62,4 +65,54 @@ exports.loginController=async(req,res)=>{
         console.log(err);
         res.status(500).json("Server Error")
     }
+}
+
+exports.registerRestaurantController=async(req,res)=>{
+    console.log("Inside registerRestaurantController");
+    const {name,email,password}=req.body
+    try
+    {
+        const existingUser=await User.findOne({email})
+        if(existingUser)
+        {
+            return res.status(406).json("Already Registered Restaurant")
+        }
+        const hashedPassword= await bcrypt.hash(password,10)
+        const newRestaurant= new User({
+            name,email,password:hashedPassword,role: "restaurant_admin",isApproved: false
+        })
+        await newRestaurant.save()
+        res.status(200).json("Restaurant registration submitted. Waiting for admin approval.")
+    }
+    catch(err)
+    {
+        res.status(401).json(err)
+    }
+    
+}
+
+exports.approveRestaurantAdminController =async(req,res)=>{
+    console.log("Inside approveRestaurantAdminController");
+    const {userId}=req.params;
+    try
+    {
+        const user=await User.findById(userId);
+        if(!user)
+        {
+            return res.status(404).json("User not found")
+        }
+        if(user.role!=="restaurant_admin")
+        {
+            return res.status(400).json("This user is not a restaurant admin");
+        }
+
+        user.isApproved=true;
+        await user.save();
+        res.status(200).json("Restaurant admin approved successfully");
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+    
 }
