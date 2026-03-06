@@ -1,6 +1,7 @@
 const express=require('express')
 const userController=require('../controllers/userController')
 const restaurantController=require('../controllers/restaurantController')
+const categoryController=require('../controllers/categoryController')
 const jwtMiddleware=require('../middlewares/jwtMiddleware')
 const roleMiddleware=require('../middlewares/roleMiddleware')
 const multerMiddleware=require('../middlewares/multerMiddleware')
@@ -28,5 +29,19 @@ router.put('/activateRestaurant/:restaurantId',jwtMiddleware,roleMiddleware(['ad
 // Admin DeActivate Restaurant profile created by Restaurant_Admin
 router.put('/deactivateRestaurant/:restaurantId',jwtMiddleware,roleMiddleware(['admin']),restaurantController.deactivateRestaurantController)
 
+// Admin Creating Categories
+router.post('/createCategory',jwtMiddleware,roleMiddleware(['admin']),categoryController.createCategoryController)
+
+// Admin Get All Categories(both Active and inActive)
+router.get('/admin/getAllCategory',jwtMiddleware,roleMiddleware(['admin']),categoryController.getAllCategoriesControllerForAdmin)
+
+// Admin Deactivate category
+router.put('/admin/deactivateCategory/:categoryId',jwtMiddleware,roleMiddleware(['admin']),categoryController.deActivateCategoryController)
+
+// Admin Activate Category
+router.put('/admin/activateCategory/:categoryId',jwtMiddleware,roleMiddleware(['admin']),categoryController.ActivateCategoryController)
+
+// Admin Update Category
+router.put('/admin/updateCategory/:categoryId',jwtMiddleware,roleMiddleware(['admin']),categoryController.updateCategoryController)
 
 module.exports=router
