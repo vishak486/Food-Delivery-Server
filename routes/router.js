@@ -2,6 +2,7 @@ const express=require('express')
 const userController=require('../controllers/userController')
 const restaurantController=require('../controllers/restaurantController')
 const categoryController=require('../controllers/categoryController')
+const foodController=require('../controllers/foodController')
 const jwtMiddleware=require('../middlewares/jwtMiddleware')
 const roleMiddleware=require('../middlewares/roleMiddleware')
 const multerMiddleware=require('../middlewares/multerMiddleware')
@@ -43,5 +44,8 @@ router.put('/admin/activateCategory/:categoryId',jwtMiddleware,roleMiddleware(['
 
 // Admin Update Category
 router.put('/admin/updateCategory/:categoryId',jwtMiddleware,roleMiddleware(['admin']),categoryController.updateCategoryController)
+
+// Restaurant_admin creates Food
+router.post('/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 
 module.exports=router
