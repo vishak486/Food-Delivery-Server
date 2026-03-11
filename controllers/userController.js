@@ -4,7 +4,7 @@ const jwt=require('jsonwebtoken')
 
 exports.registerCustomerController=async(req,res)=>{
     console.log('inside registerCustomerController');
-    const{name,email,password}=req.body
+    const{name,email,phone,password}=req.body
     try
     {
         const existingUser= await User.findOne({email})
@@ -16,7 +16,7 @@ exports.registerCustomerController=async(req,res)=>{
         {
             const hashedPassword=await bcrypt.hash(password,10)
             const newUser= new User({
-                name,email,password:hashedPassword,role:'customer'
+                name,email,phone,password:hashedPassword,role:'customer'
             })
             await newUser.save()
             res.status(200).json("Register Successfull")
@@ -69,7 +69,7 @@ exports.loginController=async(req,res)=>{
 
 exports.registerRestaurantController=async(req,res)=>{
     console.log("Inside registerRestaurantController");
-    const {name,email,password}=req.body
+    const {name,email,phone,password}=req.body
     try
     {
         const existingUser=await User.findOne({email})
@@ -79,7 +79,7 @@ exports.registerRestaurantController=async(req,res)=>{
         }
         const hashedPassword= await bcrypt.hash(password,10)
         const newRestaurant= new User({
-            name,email,password:hashedPassword,role: "restaurant_admin",isApproved: false
+            name,email,phone,password:hashedPassword,role: "restaurant_admin",isApproved: false
         })
         await newRestaurant.save()
         res.status(200).json("Restaurant registration submitted. Waiting for admin approval.")
