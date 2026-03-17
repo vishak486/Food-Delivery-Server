@@ -116,3 +116,61 @@ exports.approveRestaurantAdminController =async(req,res)=>{
     }
     
 }
+
+//Admin Get All Users
+
+exports.getAllUsersController=async(req,res)=>{
+    console.log("Inside getAllUsersController");
+    const {search,role}=req.query
+    try
+    {
+        let query={role: { $ne: 'admin' }};
+        if(role && role!=='all')
+        {
+            query.role=role;
+        }
+        // search filter
+        if(search)
+        {
+            query.name={$regex: search,$options: 'i'}
+        }
+        const users= await User.find(query).select('-password')
+        res.status(200).json(users)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    } 
+}
+
+// Admin Block users
+
+const updateBlockStatus = async (userId, status, res) => {
+    const user = await User.findById(userId);
+
+    if (!user) {
+        return res.status(404).json("User not exist");
+    }
+
+    if (user.role === 'admin') {
+        return res.status(403).json("Action not allowed on admin");
+    }
+
+    user.isBlocked = status;
+    await user.save();
+
+    return res.status(200).json({
+        message: status ? "User Blocked" : "User Unblocked"
+    });
+};
+
+exports.AdminBlockUsersController=async (req,res) => {
+    console.log("Inside AdminBlockUsersController");
+    return updateBlockStatus(req.params.userId, true, res);
+}
+// Admin Un Block users
+
+exports.AdminUnBlockUsersController=async (req,res) => {
+    console.log("Inside AdminBlockUsersController");
+    return updateBlockStatus(req.params.userId, false, res);
+}

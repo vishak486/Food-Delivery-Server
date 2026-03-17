@@ -45,6 +45,15 @@ router.put('/admin/activateCategory/:categoryId',jwtMiddleware,roleMiddleware(['
 // Admin Update Category
 router.put('/admin/updateCategory/:categoryId',jwtMiddleware,roleMiddleware(['admin']),categoryController.updateCategoryController)
 
+// Admin Get all Users
+router.get('/admin/getAllUsers',jwtMiddleware,roleMiddleware(['admin']),userController.getAllUsersController)
+
+// Admin Block users
+router.put('/admin/blockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.AdminBlockUsersController)
+
+// Admin Unblock Users
+router.put('/admin/unBlockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.AdminUnBlockUsersController)
+
 // Restaurant_admin creates Food
 router.post('/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 
