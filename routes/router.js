@@ -20,6 +20,8 @@ router.post('/registerRestaurant',userController.registerRestaurantController)
 
 // Admin Approve Restaurant_Admin
 router.put('/approveRestaurant/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.approveRestaurantAdminController)
+// Admin Reject Restaurant_Admin
+router.put('/rejectRestaurant/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.rejectRestaurantAdminController)
 
 // Restaurant_Admin creating Restaurant profile
 router.post('/createRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.createRestaurantController)

@@ -116,6 +116,20 @@ exports.approveRestaurantAdminController =async(req,res)=>{
     }
     
 }
+exports.rejectRestaurantAdminController = async (req, res) => {
+  const { userId } = req.params
+  try {
+    const user = await User.findById(userId)
+    if (!user) return res.status(404).json("User not found")
+    if (user.role !== "restaurant_admin") return res.status(400).json("This user is not a restaurant admin")
+
+    user.isApproved = false
+    await user.save()
+    res.status(200).json("Restaurant admin rejected successfully")
+  } catch(err) {
+    res.status(500).json(err)
+  }
+}
 
 //Admin Get All Users
 
