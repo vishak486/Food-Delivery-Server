@@ -58,5 +58,7 @@ router.put('/admin/unBlockUsers/:userId',jwtMiddleware,roleMiddleware(['admin'])
 
 // Restaurant_admin creates Food
 router.post('/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
+// Restaurant_admin getRestaurant Profile
+router.get('/restaurant/myRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),restaurantController.getMyRestaurantController)
 
 module.exports=router

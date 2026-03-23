@@ -84,3 +84,22 @@ exports.deactivateRestaurantController = async (req, res) => {
         res.status(500).json(err)
     }
 }
+
+// Get my restaurant profile
+exports.getMyRestaurantController=async(req,res)=>{
+    console.log("Inside getMyRestaurantController");
+    try
+    {
+        const restaurant=await Restaurant.findOne({ owner: req.userId })
+        if(!restaurant)
+        {
+            return res.status(404).json(null)
+        }
+        res.status(200).json(restaurant)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+    
+}
