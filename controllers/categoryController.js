@@ -102,3 +102,16 @@ exports.updateCategoryController=async(req,res)=>{
     }
     
 }
+
+exports.getAllCategoriesControllerForRestaurantAdmin=async(req,res)=>{
+    console.log("Inside getAllCategoriesControllerForRestaurantAdmin");
+    try
+    {
+        const AllCategories=await Category.find()
+        res.status(200).json(AllCategories)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }   
+}

@@ -30,3 +30,18 @@ exports.createFoodController=async(req,res)=>{
     } 
 }
 
+exports.fetchAllFoodController=async(req,res)=>{
+    console.log('Inside fetchAllFoodController');
+    const searchKey=req.query.search
+    const query=searchKey?{name:{ $regex:searchKey,$options:'i' }}:{};
+    try
+    {
+        const allFoods=await Food.find(query).populate("category","name").populate("restaurant","name")
+        res.status(200).json(allFoods)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }  
+}
+

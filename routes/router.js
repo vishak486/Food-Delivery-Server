@@ -23,8 +23,6 @@ router.put('/approveRestaurant/:userId',jwtMiddleware,roleMiddleware(['admin']),
 // Admin Reject Restaurant_Admin
 router.put('/rejectRestaurant/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.rejectRestaurantAdminController)
 
-// Restaurant_Admin creating Restaurant profile
-router.post('/createRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.createRestaurantController)
 
 // Admin Activate Restaurant profile created by Restaurant_Admin
 router.put('/activateRestaurant/:restaurantId',jwtMiddleware,roleMiddleware(['admin']),restaurantController.activateRestaurantController)
@@ -60,5 +58,15 @@ router.put('/admin/unBlockUsers/:userId',jwtMiddleware,roleMiddleware(['admin'])
 router.post('/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 // Restaurant_admin getRestaurant Profile
 router.get('/restaurant/myRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),restaurantController.getMyRestaurantController)
+
+// Restaurant_Admin creating Restaurant profile
+router.post('/restaurant/createRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.createRestaurantController)
+
+// restaurnat Admin fetch All foods
+router.get('/restaurant/fetchAllFoods',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.fetchAllFoodController)
+
+// restaurant Admin fetch All Categories
+router.get('/restaurant/getAllCategoryForRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),categoryController.getAllCategoriesControllerForRestaurantAdmin)
+
 
 module.exports=router
