@@ -55,7 +55,7 @@ router.put('/admin/blockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),u
 router.put('/admin/unBlockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.AdminUnBlockUsersController)
 
 // Restaurant_admin creates Food
-router.post('/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
+router.post('/restaurant/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 // Restaurant_admin getRestaurant Profile
 router.get('/restaurant/myRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),restaurantController.getMyRestaurantController)
 
@@ -68,5 +68,9 @@ router.get('/restaurant/fetchAllFoods',jwtMiddleware,roleMiddleware(['restaurant
 // restaurant Admin fetch All Categories
 router.get('/restaurant/getAllCategoryForRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),categoryController.getAllCategoriesControllerForRestaurantAdmin)
 
+// Restaurant Admin Updating Food
+router.put('/restaurant/editFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.editFoodController)
+// Restaurant Admin Fetch Food created by each restaurant
+router.get('/restaurant/fetchEachFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.fetchFoodsByRestaurantController)
 
 module.exports=router
