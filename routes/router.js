@@ -73,4 +73,10 @@ router.put('/restaurant/editFood',jwtMiddleware,roleMiddleware(['restaurant_admi
 // Restaurant Admin Fetch Food created by each restaurant
 router.get('/restaurant/fetchEachFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.fetchFoodsByRestaurantController)
 
+// Restaurant Admin Update Food into UnAVailable
+router.put('/restaurant/unAvailableFood/:foodId',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.updateIntoUnavailableFoodController)
+// Restaurant Admin Update Food into AVailable
+router.put('/restaurant/AvailableFood/:foodId',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.updateIntoAvailableFoodController)
+
+
 module.exports=router

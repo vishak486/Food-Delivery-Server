@@ -109,3 +109,42 @@ exports.fetchFoodsByRestaurantController=async(req,res)=>{
     } 
 }
 
+exports.updateIntoUnavailableFoodController=async(req,res)=>{
+    console.log("Inside updateUnavailableFoodController");
+    const {foodId}=req.params
+    try
+    {
+        const existingFood=await Food.findById(foodId)
+        if(!existingFood)
+        {
+            res.status(404).json("Food not exist")
+        }
+        existingFood.isAvailable=false
+        await existingFood.save()
+        res.status(200).json(existingFood)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}
+exports.updateIntoAvailableFoodController=async(req,res)=>{
+    console.log("Inside updateIntoAvailableFoodController");
+    const { foodId } =req.params
+    try
+    {
+        const existingFood=await Food.findById(foodId)
+        if(!existingFood)
+        {
+            res.status(404).json("Food Not Exists")
+        }
+        existingFood.isAvailable=true
+        await existingFood.save()
+        res.status(200).json(existingFood)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+    
+}
