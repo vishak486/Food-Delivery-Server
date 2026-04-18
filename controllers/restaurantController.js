@@ -103,3 +103,35 @@ exports.getMyRestaurantController=async(req,res)=>{
     }
     
 }
+
+exports.editRestaurantProfileController=async(req,res)=>{
+    console.log("Inside editRestaurantProfileController");
+    const { name, description, cuisine, street, city, state, pincode } = req.body;
+    const image = req.file ? req.file.filename : null;
+    try
+    {
+        const restaurant = await Restaurant.findOne({ owner: req.userId });
+        if (!restaurant) {
+        return res.status(404).json("Restaurant not found");
+        }
+        restaurant.name = name || restaurant.name;
+        restaurant.description = description || restaurant.description;
+        restaurant.cuisine = cuisine || restaurant.cuisine;
+        restaurant.address = {
+        street: street || restaurant.address?.street,
+        city: city || restaurant.address?.city,
+        state: state || restaurant.address?.state,
+        pincode: pincode || restaurant.address?.pincode,
+        };
+         if (image) {
+        restaurant.image = image;
+        }
+        await restaurant.save();
+        res.status(200).json(restaurant);
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+    
+}
