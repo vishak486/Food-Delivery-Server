@@ -135,3 +135,25 @@ exports.editRestaurantProfileController=async(req,res)=>{
     }
     
 }
+
+// Get all restaurant profiles (Admin only)
+
+exports.getAllRestaurantController=async(req,res)=>{
+    console.log("Inside getAllRestaurantController");
+    const searchKey=req.query.search
+    const query=searchKey?{name:{ $regex:searchKey,$options:'i' }}:{};
+    try
+    {
+        
+        const restaurants=await Restaurant.find(query).populate("owner","name email")
+        if(!restaurants)
+        {
+            return res.status(404).json("No Restaurants Found")
+        }
+        res.status(200).json(restaurants)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}

@@ -54,6 +54,9 @@ router.put('/admin/blockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),u
 // Admin Unblock Users
 router.put('/admin/unBlockUsers/:userId',jwtMiddleware,roleMiddleware(['admin']),userController.AdminUnBlockUsersController)
 
+// Admin Get All Restaurants
+router.get('/admin/allRestaurants',jwtMiddleware,roleMiddleware(['admin']),restaurantController.getAllRestaurantController)
+
 // Restaurant_admin creates Food
 router.post('/restaurant/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 // Restaurant_admin getRestaurant Profile
