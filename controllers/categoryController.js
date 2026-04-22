@@ -107,7 +107,7 @@ exports.getAllCategoriesControllerForRestaurantAdmin=async(req,res)=>{
     console.log("Inside getAllCategoriesControllerForRestaurantAdmin");
     try
     {
-        const AllCategories=await Category.find()
+        const AllCategories=await Category.find({ isActive: true })
         res.status(200).json(AllCategories)
     }
     catch(err)

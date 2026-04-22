@@ -44,14 +44,14 @@ exports.activateRestaurantController=async(req,res)=>{
     
     try
     {
-        const restaurant=await Restaurant.findById(restaurantId)
+        const restaurant=await Restaurant.findById(restaurantId).populate("owner", "name email")
         if(!restaurant)
         {
             return res.status(404).json("Restaurant not found")
         }
         restaurant.isActive=true
         await restaurant.save()
-        res.status(200).json("Restaurant Activated Successfully")
+        res.status(200).json(restaurant)
     }
     catch(err)
     {
@@ -68,7 +68,7 @@ exports.deactivateRestaurantController = async (req, res) => {
 
     try {
 
-        const restaurant = await Restaurant.findById(restaurantId)
+        const restaurant = await Restaurant.findById(restaurantId).populate("owner", "name email")
 
         if (!restaurant) {
             return res.status(404).json("Restaurant not found")
@@ -78,7 +78,7 @@ exports.deactivateRestaurantController = async (req, res) => {
 
         await restaurant.save()
 
-        res.status(200).json("Restaurant Deactivated Successfully")
+        res.status(200).json(restaurant)
 
     } catch (err) {
         res.status(500).json(err)
