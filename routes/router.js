@@ -83,5 +83,9 @@ router.put('/restaurant/AvailableFood/:foodId',jwtMiddleware,roleMiddleware(['re
 // Restaurant Admin updates Restaurant Profile
 router.put('/restaurant/editRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.editRestaurantProfileController)
 
+// Customer routes
+router.get('/customer/restaurants',restaurantController.getAllActiveRestaurantsController)
+router.get('/customer/restaurants/:restaurantId/foods',foodController.getFoodsByRestaurantController)
+
 
 module.exports=router

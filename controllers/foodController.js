@@ -148,3 +148,18 @@ exports.updateIntoAvailableFoodController=async(req,res)=>{
     }
     
 }
+
+// Customer: Get all active foods for a restaurant
+exports.getFoodsByRestaurantController=async(req,res)=>{
+    console.log("Inside getFoodsByRestaurantController");
+    const { restaurantId } = req.params;
+    try
+    {
+        const foods=await Food.find({restaurant: restaurantId,isAvailable:true})
+        res.status(200).json(foods)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}

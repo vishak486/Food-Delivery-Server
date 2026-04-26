@@ -157,3 +157,17 @@ exports.getAllRestaurantController=async(req,res)=>{
         res.status(500).json(err)
     }
 }
+
+// Customer: Get all active restaurants
+exports.getAllActiveRestaurantsController=async(req,res)=>{
+    console.log("Inside getAllActiveRestaurantsController");
+    try
+    {
+        const restaurants=await Restaurant.find({isActive:true}).populate("owner","name email")
+        res.status(200).json(restaurants)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}
