@@ -3,6 +3,7 @@ const userController=require('../controllers/userController')
 const restaurantController=require('../controllers/restaurantController')
 const categoryController=require('../controllers/categoryController')
 const foodController=require('../controllers/foodController')
+const cartController=require('../controllers/cartController')
 const jwtMiddleware=require('../middlewares/jwtMiddleware')
 const roleMiddleware=require('../middlewares/roleMiddleware')
 const multerMiddleware=require('../middlewares/multerMiddleware')
@@ -86,6 +87,8 @@ router.put('/restaurant/editRestaurant',jwtMiddleware,roleMiddleware(['restauran
 // Customer routes
 router.get('/customer/restaurants',restaurantController.getAllActiveRestaurantsController)
 router.get('/customer/restaurants/:restaurantId/foods',foodController.getFoodsByRestaurantController)
-
+// Add To Cart by customer
+router.post('/customer/AddCart',jwtMiddleware,roleMiddleware(['customer']),cartController.addToCartController)
+router.get('/customer/getCart',jwtMiddleware,roleMiddleware(['customer']),cartController.getCartController)
 
 module.exports=router

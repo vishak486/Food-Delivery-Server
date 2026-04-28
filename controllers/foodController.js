@@ -22,7 +22,7 @@ exports.createFoodController=async(req,res)=>{
             name,description,price,category:categoryId,restaurant:restaurant._id,image
         })
         await newFood.save()
-        res.status(200).json("Food Created Successfully")
+        res.status(200).json(newFood)
     }
     catch(err)
     {
@@ -121,7 +121,8 @@ exports.updateIntoUnavailableFoodController=async(req,res)=>{
         }
         existingFood.isAvailable=false
         await existingFood.save()
-        res.status(200).json(existingFood)
+        const updatedFood = await Food.findById(foodId).populate("category", "name");
+        res.status(200).json(updatedFood)
     }
     catch(err)
     {
@@ -140,7 +141,8 @@ exports.updateIntoAvailableFoodController=async(req,res)=>{
         }
         existingFood.isAvailable=true
         await existingFood.save()
-        res.status(200).json(existingFood)
+        const updatedFood = await Food.findById(foodId).populate("category", "name");
+        res.status(200).json(updatedFood)
     }
     catch(err)
     {
