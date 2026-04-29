@@ -63,3 +63,49 @@ exports.getCartController=async(req,res)=>{
         res.status(500).json(err)
     }
 }
+
+exports.updateCartItemController=async(req,res)=>{
+    console.log("Inside updateCartItemController ");
+    const { foodId } = req.params;
+    const { quantity } = req.body;
+    try
+    {
+        let cart=await Cart.findOne({user:req.userId})
+        if(!cart) return res.status(404).json({message:"Cart not Found"})
+        
+        const item = cart.items.find(i => String(i.food) === String(foodId));
+        if (!item) return res.status(404).json({ message: "Item not in cart" });
+
+        item.quantity=quantity
+        cart.totalAmount=cart.items.reduce((sum,i)=>sum+i.quantity*i.price,0)
+        await cart.save()
+        const populatedCart = await Cart.findById(cart._id).populate("items.food restaurant");
+        res.status(200).json(populatedCart)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}
+exports.removeCartItemController=async(req,res)=>{
+    console.log("Inside removeCartItemController");
+    const { foodId } = req.params;
+    try
+    {
+        let cart = await Cart.findOne({ user: req.userId });
+        if (!cart) return res.status(404).json({ message: "Cart not found" });
+        cart.items = cart.items.filter(i => String(i.food) !== String(foodId));
+        cart.totalAmount = cart.items.reduce((sum, i) => sum + i.quantity * i.price, 0);
+        if (cart.items.length === 0) {
+        await Cart.findByIdAndDelete(cart._id);
+        return res.status(200).json({ message: "Cart cleared" });
+        }
+        await cart.save();
+        const populatedCart = await Cart.findById(cart._id).populate("items.food restaurant");
+        res.status(200).json(populatedCart);
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}

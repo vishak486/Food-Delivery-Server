@@ -90,5 +90,7 @@ router.get('/customer/restaurants/:restaurantId/foods',foodController.getFoodsBy
 // Add To Cart by customer
 router.post('/customer/AddCart',jwtMiddleware,roleMiddleware(['customer']),cartController.addToCartController)
 router.get('/customer/getCart',jwtMiddleware,roleMiddleware(['customer']),cartController.getCartController)
+router.put('/customer/cartUpdate/:foodId',jwtMiddleware,roleMiddleware(['customer']),cartController.updateCartItemController)
+router.delete('/customer/removeCartItem/:foodId',jwtMiddleware,roleMiddleware(['customer']),cartController.removeCartItemController)
 
 module.exports=router
