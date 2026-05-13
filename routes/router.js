@@ -4,6 +4,7 @@ const restaurantController=require('../controllers/restaurantController')
 const categoryController=require('../controllers/categoryController')
 const foodController=require('../controllers/foodController')
 const cartController=require('../controllers/cartController')
+const orderController=require('../controllers/orderController')
 const jwtMiddleware=require('../middlewares/jwtMiddleware')
 const roleMiddleware=require('../middlewares/roleMiddleware')
 const multerMiddleware=require('../middlewares/multerMiddleware')
@@ -92,5 +93,8 @@ router.post('/customer/AddCart',jwtMiddleware,roleMiddleware(['customer']),cartC
 router.get('/customer/getCart',jwtMiddleware,roleMiddleware(['customer']),cartController.getCartController)
 router.put('/customer/cartUpdate/:foodId',jwtMiddleware,roleMiddleware(['customer']),cartController.updateCartItemController)
 router.delete('/customer/removeCartItem/:foodId',jwtMiddleware,roleMiddleware(['customer']),cartController.removeCartItemController)
+router.delete('/customer/clearCart', jwtMiddleware, roleMiddleware(['customer']), cartController.clearCartController);
+router.post('/customer/createOrder',jwtMiddleware,roleMiddleware(['customer']),orderController.createOrderController)
+router.post('/customer/verifyPayment',jwtMiddleware,roleMiddleware(['customer']),orderController.verifyPaymentController)
 
 module.exports=router

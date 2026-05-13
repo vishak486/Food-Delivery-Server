@@ -109,3 +109,12 @@ exports.removeCartItemController=async(req,res)=>{
         res.status(500).json(err)
     }
 }
+
+exports.clearCartController = async (req, res) => {
+    try {
+        await Cart.findOneAndDelete({ user: req.userId });
+        res.status(200).json({ message: "Cart cleared" });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
