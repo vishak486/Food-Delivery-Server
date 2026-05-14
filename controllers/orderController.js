@@ -84,3 +84,39 @@ exports.verifyPaymentController=async(req,res)=>{
         res.status(500).json(err)
     } 
 }
+
+// Get all orders for the logged-in customer
+exports.getCustomerOrdersController=async(req,res)=>{
+    console.log("Inside getCustomerOrdersController");
+    try
+    {
+        const orders=await Order.find({user: req.userId})
+        .populate("restaurant","name cuisine address")
+        .populate("items.food","name image price")
+        .sort({ createdAt: -1 });
+
+        res.status(200).json(orders)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }
+}
+// Get single order detail
+exports.getCustomerOrderDetailController=async(req,res)=>{
+    console.log("Inside getCustomerOrderDetailController");
+    const orderId = req.params.orderId
+    try
+    {
+        const order=await Order.findOne({
+            _id:orderId,user:req.userId
+        }).populate("restaurant", "name cuisine address phone")
+        .populate("items.food", "name image price category");
+        
+        res.status(200).json(order)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    }  
+}

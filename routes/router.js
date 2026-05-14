@@ -97,4 +97,7 @@ router.delete('/customer/clearCart', jwtMiddleware, roleMiddleware(['customer'])
 router.post('/customer/createOrder',jwtMiddleware,roleMiddleware(['customer']),orderController.createOrderController)
 router.post('/customer/verifyPayment',jwtMiddleware,roleMiddleware(['customer']),orderController.verifyPaymentController)
 
+router.get('/customer/orders',jwtMiddleware,roleMiddleware(['customer']),orderController.getCustomerOrdersController)
+router.get('/customer/orders/:orderId',jwtMiddleware,roleMiddleware(['customer']),orderController.getCustomerOrderDetailController)
+
 module.exports=router
