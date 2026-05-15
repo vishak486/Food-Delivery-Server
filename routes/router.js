@@ -84,7 +84,8 @@ router.put('/restaurant/unAvailableFood/:foodId',jwtMiddleware,roleMiddleware(['
 router.put('/restaurant/AvailableFood/:foodId',jwtMiddleware,roleMiddleware(['restaurant_admin']),foodController.updateIntoAvailableFoodController)
 // Restaurant Admin updates Restaurant Profile
 router.put('/restaurant/editRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.editRestaurantProfileController)
-
+router.get('/restaurant/orders', jwtMiddleware, roleMiddleware(['restaurant_admin']), orderController.getRestaurantOrdersController);
+router.put('/restaurant/orders/:orderId/status', jwtMiddleware, roleMiddleware(['restaurant_admin']), orderController.updateOrderStatusController);
 // Customer routes
 router.get('/customer/restaurants',restaurantController.getAllActiveRestaurantsController)
 router.get('/customer/restaurants/:restaurantId/foods',foodController.getFoodsByRestaurantController)

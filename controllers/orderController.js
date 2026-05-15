@@ -1,5 +1,6 @@
 const { log } = require('console');
 const Order=require('../models/orderModel')
+const Restaurant=require('../models/restaurantModel')
 const razorpay=require('../utils/razorpay')
 const crypto =require('crypto')
 
@@ -119,4 +120,56 @@ exports.getCustomerOrderDetailController=async(req,res)=>{
     {
         res.status(500).json(err)
     }  
+}
+
+exports.getRestaurantOrdersController=async(req,res)=>{
+    console.log("Inside getRestaurantOrdersController");
+    try
+    {
+        const restaurants=await Restaurant.findOne({owner:req.userId})
+        if(!restaurants)
+        {
+            res.status(404).json("Restaurant Not Found")
+        }
+        const orders=await Order.find({restaurant:restaurants._id})
+            .populate("user", "name email phone")
+            .populate("items.food", "name image price")
+            .sort({ createdAt: -1 });
+
+        res.status(200).json(orders)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    } 
+}
+
+exports.updateOrderStatusController=async(req,res)=>{
+    console.log("Inside updateOrderStatusController");
+    const { orderId }=req.params
+    const { orderStatus }=req.body
+    console.log(orderStatus);
+    
+    const allowedStatuses = ["confirmed", "preparing", "out_for_delivery", "delivered", "cancelled"];
+    try
+    {
+        if (!allowedStatuses.includes(orderStatus)) {
+            return res.status(400).json({ message: "Invalid order status" });
+        }
+        const restaurant=await Restaurant.findOne({owner:req.userId})
+        if(!restaurant)
+        {
+            res.status(404).json("Restaurant Not Found")
+        }
+        const order=await Order.findOneAndUpdate({_id:orderId,restaurant:restaurant._id},{orderStatus},{returnDocument: 'after'})
+        .populate("user", "name email phone")
+        .populate("items.food", "name image price");
+
+        res.status(200).json(order)
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(500).json(err)
+    }
 }
