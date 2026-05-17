@@ -173,3 +173,21 @@ exports.updateOrderStatusController=async(req,res)=>{
         res.status(500).json(err)
     }
 }
+
+exports.getAllOrdersController=async(req,res)=>{
+    console.log("Inside getAllOrdersController");
+    try
+    {
+        const orders = await Order.find()
+        .populate("user", "name email phone")
+        .populate("restaurant", "name cuisine address")
+        .populate("items.food", "name image price")
+        .sort({ createdAt: -1 });
+        
+        res.status(200).json(orders)
+    }
+    catch(err)
+    {
+        res.status(500).json(err)
+    } 
+} 
