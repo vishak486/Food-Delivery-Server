@@ -7,7 +7,7 @@ const crypto =require('crypto')
 exports.createOrderController=async(req,res)=>{
     console.log("Inside createOrderController");
     const { restaurantId, items, totalAmount,shippingAddress  } = req.body;
-    console.log(req.body);
+    //console.log(req.body);
     try
     {
         const options={
@@ -33,7 +33,7 @@ exports.createOrderController=async(req,res)=>{
     }
     catch(err)
     {
-        console.log(err);
+        //console.log(err);
         res.status(500).json(err)
     }
 }
@@ -41,7 +41,7 @@ exports.createOrderController=async(req,res)=>{
 exports.verifyPaymentController=async(req,res)=>{
     console.log("Inside verifyPaymentController ");
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
-    console.log(req.body);
+   // console.log(req.body);
     try
     {
         // Generate signature using secret
@@ -148,7 +148,7 @@ exports.updateOrderStatusController=async(req,res)=>{
     console.log("Inside updateOrderStatusController");
     const { orderId }=req.params
     const { orderStatus }=req.body
-    console.log(orderStatus);
+    //console.log(orderStatus);
     
     const allowedStatuses = ["confirmed", "preparing", "out_for_delivery", "delivered", "cancelled"];
     try

@@ -40,7 +40,7 @@ exports.createRestaurantController=async(req,res)=>{
 exports.activateRestaurantController=async(req,res)=>{
     console.log("Inside activateRestaurantController");
     const {restaurantId}=req.params
-    console.log(restaurantId);
+   // console.log(restaurantId);
     
     try
     {

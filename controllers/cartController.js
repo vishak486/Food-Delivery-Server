@@ -5,17 +5,17 @@ const Cart=require('../models/cartModel')
 exports.addToCartController=async(req,res)=>{
     console.log("Inside addToCartController");
     const { foodId, quantity } = req.body;
-    console.log('reqbody',req.body);
-    console.log('requserid',req.userId);
+    //console.log('reqbody',req.body);
+    //console.log('requserid',req.userId);
     try
     {
         const food=await Food.findOne({ _id: foodId }).populate("restaurant");
-        console.log("food object:", food);
+        //console.log("food object:", food);
         if (!food || !food.isAvailable) {
             return res.status(404).json({ message: "Food not available" });
         }
         let cart=await Cart.findOne({user:req.userId})
-        console.log("cart object before:", cart);
+        //console.log("cart object before:", cart);
         if(!cart)
         {
             cart=new Cart({
@@ -37,13 +37,13 @@ exports.addToCartController=async(req,res)=>{
             } 
         }
         cart.totalAmount = cart.items.reduce((sum, i) => sum + i.quantity * i.price, 0);
-        console.log("cart before save:", cart);
+        //console.log("cart before save:", cart);
         await cart.save();
         res.status(200).json(await cart.populate("items.food restaurant"));
     }
     catch(err)
     {
-        console.error("Error in addToCartController:", err);
+        //console.error("Error in addToCartController:", err);
         res.status(500).json(err)
     } 
 }

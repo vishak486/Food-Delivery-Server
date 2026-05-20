@@ -48,7 +48,7 @@ exports.fetchAllFoodController=async(req,res)=>{
 exports.editFoodController=async(req,res)=>{
     console.log("Inside editFoodController");
     const {foodId,name,description,price,categoryId}=req.body
-    console.log(req.body);
+   // console.log(req.body);
     try
     {
         const restaurant=await Restaurant.findOne({owner:req.userId})
@@ -78,7 +78,7 @@ exports.editFoodController=async(req,res)=>{
     }
     catch(err)
     {
-        console.error("EditFood error:", err)
+        //console.error("EditFood error:", err)
         res.status(500).json(err)
     }
     

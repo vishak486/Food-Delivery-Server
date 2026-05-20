@@ -5,6 +5,7 @@ const categoryController=require('../controllers/categoryController')
 const foodController=require('../controllers/foodController')
 const cartController=require('../controllers/cartController')
 const orderController=require('../controllers/orderController')
+const dashboardController=require('../controllers/dashboardController')
 const jwtMiddleware=require('../middlewares/jwtMiddleware')
 const roleMiddleware=require('../middlewares/roleMiddleware')
 const multerMiddleware=require('../middlewares/multerMiddleware')
@@ -62,6 +63,8 @@ router.get('/admin/allRestaurants',jwtMiddleware,roleMiddleware(['admin']),resta
 // Admin Get All Orders Details from Every Restaurant
 router.get('/admin/orders',jwtMiddleware,roleMiddleware(['admin']),orderController.getAllOrdersController)
 
+// Admin Dashboard
+router.get('/admin/dashboard-stats',jwtMiddleware,roleMiddleware(['admin']),dashboardController.getDashboardStatsAdminController)
 // Restaurant_admin creates Food
 router.post('/restaurant/createFood',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),foodController.createFoodController)
 // Restaurant_admin getRestaurant Profile
@@ -89,6 +92,7 @@ router.put('/restaurant/AvailableFood/:foodId',jwtMiddleware,roleMiddleware(['re
 router.put('/restaurant/editRestaurant',jwtMiddleware,roleMiddleware(['restaurant_admin']),multerMiddleware.single('image'),restaurantController.editRestaurantProfileController)
 router.get('/restaurant/orders', jwtMiddleware, roleMiddleware(['restaurant_admin']), orderController.getRestaurantOrdersController);
 router.put('/restaurant/orders/:orderId/status', jwtMiddleware, roleMiddleware(['restaurant_admin']), orderController.updateOrderStatusController);
+router.get('/restaurant/dashboard-stats', jwtMiddleware, roleMiddleware(['restaurant_admin']), dashboardController.getDashboardStatsRestaurantAdminController);
 // Customer routes
 router.get('/customer/restaurants',restaurantController.getAllActiveRestaurantsController)
 router.get('/customer/restaurants/:restaurantId/foods',foodController.getFoodsByRestaurantController)
